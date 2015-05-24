@@ -1,0 +1,72 @@
+#! /bin/sh
+#
+# chkconfig: - 55 45
+# description:  Twitter's twemproxy nutcracker
+# processname: nutcracker
+# config: /etc/sysconfig/twemproxy
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+USER="<%= @user -%>"
+
+if [ -f /etc/sysconfig/twemproxy ];then
+    . /etc/sysconfig/twemproxy
+fi
+
+# Check that networking is up.
+if [ "$NETWORKING" = "no" ]
+then
+    exit 0
+fi
+
+RETVAL=0
+prog="<%= @daemon -%>"
+
+start () {
+    echo -n $"Starting nutcracker(twemproxy): "
+    daemon --user ${USER} ${prog} $DAEMON_ARGS
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/nutcracker
+}
+stop () {
+    echo -n $"Stopping nutcracker(twemproxy): "
+    killproc ${prog}
+    RETVAL=$?
+    echo
+    if [ $RETVAL -eq 0 ] ; then
+        rm -f /var/lock/subsys/nutcracker
+    fi
+}
+
+restart () {
+    stop
+    start
+}
+
+
+# See how we were called.
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status ${prog}
+    ;;
+  restart|reload)
+    restart
+    ;;
+  condrestart)
+    [ -f /var/lock/subsys/nutcracker ] && restart || :
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|status|restart|reload|condrestart}"
+    exit 1
+esac
+
+exit $?
+
