@@ -6,6 +6,8 @@ description 'Installs/Configures twemproxy'
 long_description 'Installs/Configures twemproxy'
 version '0.1.3'
 
-supports 'ubuntu'
-
 depends 'apt'
+
+%w(ubuntu redhat centos amazon).each do |os|
+  supports os
+end

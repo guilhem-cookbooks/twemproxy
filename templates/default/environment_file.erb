@@ -1,0 +1,23 @@
+DAEMON_ARGS=" -d -c <%= @launch_options['conf_file'] %>
+<% if @launch_options['verbosity'] -%>
+-v <%= @launch_options['verbosity'] %>
+<% end -%>
+<% if @launch_options['log_file'] -%>
+-o <%= @launch_options['log_file'] %>
+<% end -%>
+<% if @launch_options['stats_port'] -%>
+-s <%= @launch_options['stats_port'] %>
+<% end -%>
+<% if @launch_options['stats_address'] -%>
+-a <%= @launch_options['stats_address'] %>
+<% end -%>
+<% if @launch_options['stats_interval'] -%>
+-i <%= @launch_options['stats_interval'] %>
+<% end -%>
+<% if @launch_options['pid_file'] -%>
+-p <%= @launch_options['pid_file'] %>
+<% end -%>
+<% if @launch_options['mbuf_size'] -%>
+-m <%= @launch_options['mbuf_size'] %>
+<% end -%>
+"
